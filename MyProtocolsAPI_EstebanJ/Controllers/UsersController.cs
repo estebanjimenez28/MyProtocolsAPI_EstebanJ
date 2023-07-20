@@ -30,7 +30,7 @@ namespace MyProtocolsAPI_EstebanJ.Controllers
             
         {
             var user = await _context.Users.SingleOrDefaultAsync(e => e.Email.Equals(username) &&
-            e.Password.Equals(password));   
+            e.Password == password);   
 
             if (user == null)
             {
