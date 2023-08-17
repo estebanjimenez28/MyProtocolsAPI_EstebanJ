@@ -12,7 +12,7 @@ namespace MyProtocolsAPI_EstebanJ.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ApiKey]
+  
     public class ProtocolsController : ControllerBase
     {
         private readonly MyProtocolsDBContext _context;
@@ -50,7 +50,24 @@ namespace MyProtocolsAPI_EstebanJ.Controllers
 
             return protocol;
         }
+        //GET: api/Protocols/GetProtocolListByUser?id=1
+        //Pensando en colecciones observables esta funcion podria entregar un enumerable (obviamente usumos su interface)
+        [HttpGet("GetProtocolListByUser")]
+        public async Task<ActionResult<IEnumerable<Protocol>>> GetProtocoListByUserl(int id)
+        {
+            if (_context.Protocols == null)
+            {
+                return NotFound();
+            }
+            var protocolList = await _context.Protocols.Where(p => p.UserId.Equals(id)).ToListAsync();
 
+            if (protocolList == null)
+            {
+                return NotFound();
+            }
+
+            return protocolList;
+        }
         // PUT: api/Protocols/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
